@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { submitForm } from './store/actionCreators';
 import {
   Row,
   Col,
@@ -18,11 +20,7 @@ class Main extends Component {
     bitPrice: 18963.28,
     tenNganHang: '',
     soTaiKhoan: '',
-    tenTaiKhoan: '',
-    submitted: false,
-    errors: {
-      soTaiKhoan: '',
-    },
+    submitted: false
   };
 
   numberWithCommas = x => {
@@ -65,21 +63,6 @@ class Main extends Component {
     });
   };
 
-  onAccFocus = ev => {
-    if (this.state.soTaiKhoan === '0331003782357') {
-      this.setState({
-        tenTaiKhoan: 'TRAN HUU LOC',
-      });
-      ev.target.disabled = true;
-    } else if (this.state.soTaiKhoan.length < 13) {
-      this.setState({
-        errors: {
-          soTaiKhoan: 'Invalid account',
-        },
-      });
-    }
-  };
-
   submitForm = event => {
     event.preventDefault();
     const myForm = document.getElementById('myForm');
@@ -94,6 +77,7 @@ class Main extends Component {
       submitted: true,
     });
     console.log('data', object);
+    this.props.submitForm(object);
   };
 
   render() {
@@ -309,7 +293,7 @@ class Main extends Component {
               controlId="formBasicText"
               className="short-form-control"
               validationState={
-                this.state.errors['soTaiKhoan']
+                this.props.errors['soTaiKhoan']
                   ? 'error'
                   : this.state.submitted
                     ? this.state['soTaiKhoan'] ? null : 'error'
@@ -325,8 +309,8 @@ class Main extends Component {
                 value={this.state['soTaiKhoan']}
                 onChange={ev => this.handleInputChange(ev)}
               />
-              {(this.state.errors['soTaiKhoan'] && (
-                <HelpBlock>{this.state.errors['soTaiKhoan']}</HelpBlock>
+              {(this.props.errors['soTaiKhoan'] && (
+                <HelpBlock>{this.props.errors['soTaiKhoan']}</HelpBlock>
               )) ||
                 (this.state.submitted &&
                   !this.state['soTaiKhoan'] && (
@@ -338,7 +322,7 @@ class Main extends Component {
               className="short-form-control"
               validationState={
                 this.state.submitted
-                  ? this.state['tenTaiKhoan'] ? null : 'error'
+                  ? this.props.tenTaiKhoan ? null : 'error'
                   : null
               }
             >
@@ -348,12 +332,12 @@ class Main extends Component {
                 type="text"
                 name="tenTaiKhoan"
                 required
-                value={this.state['tenTaiKhoan']}
+                value={this.props.tenTaiKhoan}
+                disabled={this.props.tenTaiKhoan ? true : false}
                 onChange={ev => this.handleInputChange(ev)}
-                onFocus={ev => this.onAccFocus(ev)}
               />
               {this.state.submitted &&
-                !this.state['tenTaiKhoan'] && (
+                !this.props.tenTaiKhoan && (
                   <HelpBlock>Thông tin này là cần thiết.</HelpBlock>
                 )}
             </FormGroup>
@@ -374,4 +358,11 @@ class Main extends Component {
 
 Main.propTypes = {};
 
-export default Main;
+function mapStateToProps(state) {
+  return {
+    tenTaiKhoan: state.tenTaiKhoan,
+    errors: state.errors
+  }
+}
+
+export default connect(mapStateToProps, { submitForm })(Main);
