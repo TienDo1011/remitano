@@ -65,7 +65,7 @@ class Main extends Component {
 
   onAccFocus = ev => {
     this.props.validateAccount({
-      soTaiKhoan: this.state.toTaiKhoan
+      soTaiKhoan: this.state.soTaiKhoan
     });
   };
 
