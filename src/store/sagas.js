@@ -1,19 +1,19 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import Api from './api';
 
-function* submitForm(action) {
+function* validateAccount(action) {
   try {
-    const user = yield call(new Api().submitForm, action.payload.data);
-    yield put({ type: 'SUBMIT_FORM_SUCCEEDED', payload: {
+    const user = yield call(new Api().validateAccount, action.payload.data);
+    yield put({ type: 'VALIDATE_ACCOUNT_SUCCEEDED', payload: {
       userName: user.data.userName}
     });
   } catch (err) {
     if (err.message.includes('400')) {
-      yield put({ type: 'SUBMIT_FORM_FAILED', payload: {
+      yield put({ type: 'VALIDATE_ACCOUNT_FAILED', payload: {
         message: 'Invalid account'
       }});
     } else {
-      yield put({ type: 'SUBMIT_FORM_FAILED', payload: {
+      yield put({ type: 'VALIDATE_ACCOUNT_FAILED', payload: {
         message: 'something went wrong'
       }});
     }
@@ -21,7 +21,7 @@ function* submitForm(action) {
 }
 
 function* mySaga() {
-  yield takeLatest('SUBMIT_FORM', submitForm);
+  yield takeLatest('VALIDATE_ACCOUNT', validateAccount);
 }
 
 export default mySaga;

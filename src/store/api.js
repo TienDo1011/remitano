@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export default class Api {
-  submitForm(data) {
+  validateAccount(data) {
     return axios.post('https://us-central1-remitano-e1e18.cloudfunctions.net/validate/', data);
   }
 }

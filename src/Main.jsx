@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { submitForm } from './store/actionCreators';
+import { validateAccount } from './store/actionCreators';
 import {
   Row,
   Col,
@@ -63,6 +63,12 @@ class Main extends Component {
     });
   };
 
+  onAccFocus = ev => {
+    this.props.validateAccount({
+      soTaiKhoan: this.state.toTaiKhoan
+    });
+  };
+
   submitForm = event => {
     event.preventDefault();
     const myForm = document.getElementById('myForm');
@@ -77,7 +83,6 @@ class Main extends Component {
       submitted: true,
     });
     console.log('data', object);
-    this.props.submitForm(object);
   };
 
   render() {
@@ -335,6 +340,7 @@ class Main extends Component {
                 value={this.props.tenTaiKhoan}
                 disabled={this.props.tenTaiKhoan ? true : false}
                 onChange={ev => this.handleInputChange(ev)}
+                onFocus={ev => this.onAccFocus(ev)}
               />
               {this.state.submitted &&
                 !this.props.tenTaiKhoan && (
@@ -365,4 +371,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, { submitForm })(Main);
+export default connect(mapStateToProps, { validateAccount })(Main);

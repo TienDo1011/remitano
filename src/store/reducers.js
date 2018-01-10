@@ -1,4 +1,4 @@
-import { SUBMIT_FORM_SUCCEEDED, SUBMIT_FORM_FAILED } from './actionTypes';
+import { VALIDATE_ACCOUNT_SUCCEEDED, VALIDATE_ACCOUNT_FAILED } from './actionTypes';
 
 const initalState = {
   tenTaiKhoan: '',
@@ -9,7 +9,7 @@ const initalState = {
 
 export default function form(state = initalState, action) {
   switch (action.type) {
-    case SUBMIT_FORM_FAILED:
+    case VALIDATE_ACCOUNT_FAILED:
       return {
         ...state,
         errors: {
@@ -17,7 +17,7 @@ export default function form(state = initalState, action) {
         }
       };
       break;
-    case SUBMIT_FORM_SUCCEEDED:
+    case VALIDATE_ACCOUNT_SUCCEEDED:
     return {
       ...state,
       tenTaiKhoan: action.payload.userName,

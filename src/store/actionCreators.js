@@ -1,8 +1,8 @@
-import { SUBMIT_FORM } from './actionTypes';
+import { VALIDATE_ACCOUNT } from './actionTypes';
 
-export function submitForm(data) {
+export function validateAccount(data) {
   return {
-    type: SUBMIT_FORM,
+    type: VALIDATE_ACCOUNT,
     payload: {
       data
     }
